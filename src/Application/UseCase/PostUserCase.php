@@ -21,7 +21,7 @@ final class PostUserCase
     ) {
     }
 
-    public function post(UserInputDto $inputDto): UserOutputDto
+    public function userExist(UserInputDto $inputDto): ?UserOutputDto
     {
         $existUser = $this->userRepository->existUserWithEmail($inputDto->email);
         if ($existUser) {
@@ -30,6 +30,11 @@ final class PostUserCase
             );
         }
 
+        return null;
+    }
+
+    public function post(UserInputDto $inputDto): UserOutputDto
+    {
         $user = $this->userRepository->create(
             email: $inputDto->email,
             name: $inputDto->name
