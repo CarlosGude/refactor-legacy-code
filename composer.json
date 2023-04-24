@@ -7,6 +7,9 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "^2.9",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.14",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2",
@@ -15,6 +18,10 @@
         "symfony/yaml": "6.2.*"
     },
     "require-dev": {
+        "friends-of-behat/mink-browserkit-driver": "^1.6",
+        "friends-of-behat/mink-extension": "^2.7",
+        "friends-of-behat/symfony-extension": "^2.4",
+        "symfony/maker-bundle": "^1.48"
     },
     "config": {
         "allow-plugins": {
@@ -60,7 +67,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "6.2.*"
         }
     }
