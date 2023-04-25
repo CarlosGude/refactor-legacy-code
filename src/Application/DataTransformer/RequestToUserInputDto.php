@@ -17,7 +17,7 @@ final class RequestToUserInputDto
      */
     public function __construct(array $body)
     {
-        if (array_keys($body) == ['email', 'name']) {
+        if (array_keys($body) != ['email', 'name']) {
             throw new RequestNotValidException();
         }
 

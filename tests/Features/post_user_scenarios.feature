@@ -22,7 +22,7 @@ Feature: Post Users
     Then the response should be received a JSON
     Then the response code must be 400
     Then the response must contain a key called "email"
-    Then the response "email" must be equals to "This value can not be null or empty."
+    Then the response "email" must be equals to "This value should not be blank."
 
   Scenario: Post an user without name
     Given the user requests body:
@@ -32,8 +32,8 @@ Feature: Post Users
     Then the response should be received a JSON
     Then the response should be received a JSON
     Then the response code must be 400
-    Then the response must contain a key called "email"
-    Then the response "email" must be equals to "This value can not be null or empty."
+    Then the response must contain a key called "name"
+    Then the response "name" must be equals to "This value should not be blank."
 
   Scenario: Post an existing user
     Given the following user exist:
@@ -49,3 +49,8 @@ Feature: Post Users
     Then the response must contain a key called "email"
     Then the response "name" must be a "string"
     Then the response "email" must be a "email"
+
+  Scenario: Post an user without body
+    When the demo scenario sends a POST request to "/api/user" with the given body
+    Then the response code must be 400
+
