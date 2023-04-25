@@ -39,6 +39,7 @@
 ###< friendsofphp/php-cs-fixer ###
 ./.idea/*
 ./.idea
+.idea
 
 
 ###> phpunit/phpunit ###
@@ -46,7 +47,3 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
