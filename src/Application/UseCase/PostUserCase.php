@@ -9,6 +9,7 @@ use App\Application\Logger\UserCaseLogger;
 use App\Application\Services\SendWelcomeEmail;
 use App\Infrastructure\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class PostUserCase
@@ -33,7 +34,10 @@ final class PostUserCase
         return null;
     }
 
-    public function post(UserInputDto $inputDto): UserOutputDto
+    /**
+     * @throws DataNotValidException
+     */
+    public function post(UserInputDto $inputDto): UserOutputDto|DataNotValidException
     {
         $user = $this->userRepository->create(
             email: $inputDto->email,
@@ -42,8 +46,7 @@ final class PostUserCase
         $errors = $this->validator->validate($user);
 
         if ($errors->count() > 0) {
-            $exception = new DataNotValidException();
-            $exception->setErrors($errors);
+            return (new DataNotValidException())->setErrors($this->errorsToArray($errors));
         }
 
         $this->userRepository->save($user, true);
@@ -57,5 +60,20 @@ final class PostUserCase
         return new UserOutputDto(
             email: $user->getEmail(), name: $user->getName()
         );
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function errorsToArray(ConstraintViolationListInterface $violationList): array
+    {
+        /** @var array<string, string> $error */
+        $error = [];
+
+        foreach ($violationList as $violation) {
+            $error[$violation->getPropertyPath()] = $violation->getMessage();
+        }
+
+        return $error;
     }
 }

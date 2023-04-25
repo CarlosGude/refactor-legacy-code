@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Http;
 
 use App\Application\DataTransformer\RequestToUserInputDto;
+use App\Application\Exception\DataNotValidException;
 use App\Application\Exception\RequestNotValidException;
 use App\Application\UseCase\PostUserCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class PostUserController extends AbstractController
 {
+    /**
+     * @throws DataNotValidException
+     */
     #[Route('api/user', name: 'put_entity_one', methods: ['POST'])]
     public function post(Request $request, PostUserCase $postUserCase): JsonResponse
     {
@@ -28,6 +32,11 @@ final class PostUserController extends AbstractController
             return $this->json($postUserCase->post($dto));
         }
 
-        return $this->json($postUserCase->post($dto), 201);
+        $data = $postUserCase->post($dto);
+        if ($data instanceof DataNotValidException) {
+            return $this->json($data->getErrors(), 400);
+        }
+
+        return $this->json($data, 201);
     }
 }

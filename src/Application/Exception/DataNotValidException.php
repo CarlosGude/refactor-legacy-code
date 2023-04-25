@@ -2,18 +2,25 @@
 
 namespace App\Application\Exception;
 
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-
 final class DataNotValidException extends \Exception
 {
-    protected ?ConstraintViolationListInterface $errors;
+    /** @var array<string, string> */
+    protected array $errors;
 
-    public function getErrors(): ?ConstraintViolationListInterface
+    /**
+     * @return array<string, string>
+     */
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    public function setErrors(?ConstraintViolationListInterface $errors): DataNotValidException
+    /**
+     * @param array<string, string> $errors
+     *
+     * @return $this
+     */
+    public function setErrors(array $errors): self
     {
         $this->errors = $errors;
 

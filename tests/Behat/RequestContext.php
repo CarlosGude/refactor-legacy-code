@@ -36,8 +36,8 @@ final class RequestContext implements Context
     public function theUserRequestsBody(TableNode $table): void
     {
         $this->bodyRequest = [
-            'title' => $table->getHash()[0]['title'],
-            'body' => $table->getHash()[0]['body'],
+            'email' => $table->getHash()[0]['email'],
+            'name' => $table->getHash()[0]['name'],
         ];
     }
 

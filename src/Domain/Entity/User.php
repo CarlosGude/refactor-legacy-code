@@ -16,10 +16,11 @@ final class User
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Assert\NotNull]
+    #[Assert\NotBlank]
     private string $name;
 
-    #[Assert\NotNull]
+    #[ORM\Column]
+    #[Assert\NotBlank]
     #[Assert\Email]
     private string $email;
 
