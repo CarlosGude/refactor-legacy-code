@@ -1,0 +1,4 @@
+email:
+  welcome:
+    subject: "Welcome to Leadtech"
+    body: "Hello :name, thanks for registering on our site. <br>Regards, Leadtech Team"

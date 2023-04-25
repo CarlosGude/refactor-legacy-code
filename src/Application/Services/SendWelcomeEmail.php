@@ -20,8 +20,8 @@ final class SendWelcomeEmail
         $email = (new Email())
             ->from('hello@example.com')
             ->to($dto->email)
-            ->subject($this->translator->trans('email.welcome', ['name' => $dto->name]))
-            ->text($this->translator->trans('email.welcome', ['name' => $dto->name]))
+            ->subject($this->translator->trans('email.welcome.subject'))
+            ->html($this->translator->trans('email.welcome.body', [':name' => $dto->name]))
         ;
 
         $this->mailer->send($email);
