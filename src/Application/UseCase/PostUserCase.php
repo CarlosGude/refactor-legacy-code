@@ -27,7 +27,8 @@ final class PostUserCase
         $existUser = $this->userRepository->existUserWithEmail($inputDto->email);
         if ($existUser) {
             return new UserOutputDto(
-                email: $existUser->getEmail(), name: $existUser->getName()
+                email: $existUser->getEmail(),
+                name: $existUser->getName()
             );
         }
 
@@ -58,7 +59,8 @@ final class PostUserCase
         }
 
         return new UserOutputDto(
-            email: $user->getEmail(), name: $user->getName()
+            email: $user->getEmail(),
+            name: $user->getName()
         );
     }
 

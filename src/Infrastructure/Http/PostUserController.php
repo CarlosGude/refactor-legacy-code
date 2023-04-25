@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Http;
 
 use App\Application\DataTransformer\RequestToUserInputDto;
+use App\Application\Dto\Input\UserInputDto;
 use App\Application\Exception\DataNotValidException;
 use App\Application\Exception\RequestNotValidException;
 use App\Application\UseCase\PostUserCase;
@@ -20,23 +21,28 @@ final class PostUserController extends AbstractController
     public function post(Request $request, PostUserCase $postUserCase): JsonResponse
     {
         $request = $request->toArray();
+        $response = null;
+        $dto = null;
+        $data = [];
 
         try {
             $dto = (new RequestToUserInputDto($request))->transform();
         } catch (RequestNotValidException $exception) {
-            return $this->json($exception->getMessage(), 400);
+            $response = $this->json($exception->getMessage(), 400);
         }
 
-        $userDto = $postUserCase->userExist($dto);
-        if ($userDto) {
-            return $this->json($postUserCase->post($dto));
+        if (!$response && $dto instanceof UserInputDto) {
+            $userDto = $postUserCase->userExist($dto);
+            if ($userDto) {
+                $response = $this->json($postUserCase->post($dto), 200);
+            }
+
+            $data = $postUserCase->post($dto);
+            if ($data instanceof DataNotValidException && !$response) {
+                $response = $this->json($data->getErrors(), 400);
+            }
         }
 
-        $data = $postUserCase->post($dto);
-        if ($data instanceof DataNotValidException) {
-            return $this->json($data->getErrors(), 400);
-        }
-
-        return $this->json($data, 201);
+        return $response ?? $this->json($data, 201);
     }
 }
